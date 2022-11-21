@@ -10,3 +10,5 @@ const User = sequelize.define("user", {
   last_login_data: { type: DataTypes.DATE },
   status: { type: DataTypes.STRING },
 });
+
+module.exports = User;
