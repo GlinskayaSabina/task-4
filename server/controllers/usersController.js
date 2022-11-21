@@ -36,7 +36,10 @@ class UserController {
     const token = generateJwt(user.id, user.email);
     return res.json({ token });
   }
-  async check(req, res) {}
+  async check(req, res) {
+    const token = generateJwt(req.user.id, req.user.email);
+    return res.json({ token });
+  }
 }
 
 module.exports = new UserController();
