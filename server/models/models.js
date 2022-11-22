@@ -7,8 +7,8 @@ const User = sequelize.define("user", {
   password: { type: DataTypes.STRING },
   name: { type: DataTypes.STRING },
   registration_date: { type: DataTypes.DATE },
-  last_login_data: { type: DataTypes.DATE },
-  status: { type: DataTypes.STRING },
+  last_login_date: { type: DataTypes.DATE },
+  status: { type: DataTypes.STRING, defaultValue: "unblocked" },
 });
 
 module.exports = User;

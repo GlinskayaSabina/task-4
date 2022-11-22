@@ -7,6 +7,8 @@ router.post("/registration", usersController.registration);
 router.post("/login", usersController.login);
 router.get("/auth", authMiddleware, usersController.check);
 
-router.delete("/");
+router.get("/home", usersController.home);
+router.delete("/delete");
+router.patch("/changeStatuse");
 
 module.exports = router;
