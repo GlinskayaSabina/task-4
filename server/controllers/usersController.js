@@ -39,6 +39,10 @@ class UserController {
     if (!compairPassword) {
       return next(ApiError.badRequest("Invalid password"));
     }
+
+    if (user.status === "blocked") {
+      return next(ApiError.badRequest("Your account was blocked"));
+    }
     user.last_login_date = new Date();
     user.save();
     const token = generateJwt(user.id, user.email);
@@ -54,7 +58,47 @@ class UserController {
     return res.json(users);
   }
   async delete(req, res) {
-    const users = await User.de;
+    const { ids } = req.body;
+    const { id } = req.user;
+
+    const users = await User.destroy({
+      where: {
+        id: [ids],
+      },
+    });
+
+    if (ids.includes(id)) {
+      return res.status(301).json({
+        instruction: "logout",
+        redirect: "/",
+      });
+    }
+
+    return res.json(users);
+  }
+  async block(req, res) {
+    const { ids, status } = req.body;
+    const { id } = req.user;
+
+    await User.update(
+      {
+        status: status,
+      },
+      {
+        where: {
+          id: ids,
+        },
+      }
+    );
+
+    if (ids.includes(id) && status === "blocked") {
+      return res.status(301).json({
+        instruction: "logout",
+        redirect: "/",
+      });
+    }
+
+    return res.json(true);
   }
 }
 

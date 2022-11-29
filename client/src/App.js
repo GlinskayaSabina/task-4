@@ -1,15 +1,22 @@
+import { observer } from "mobx-react-lite";
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
+import { Context } from ".";
 import AppRouter from "./components/AppRouter";
-import NavBar from "./components/NavBar";
+import UserStore from "./store/UserStore";
 
-function App() {
+const App = observer(() => {
   return (
-    <BrowserRouter>
-      <NavBar />
-      <AppRouter />
-    </BrowserRouter>
+    <Context.Provider
+      value={{
+        user: new UserStore(),
+      }}
+    >
+      <BrowserRouter>
+        <AppRouter />
+      </BrowserRouter>
+    </Context.Provider>
   );
-}
+});
 
 export default App;

@@ -22,3 +22,30 @@ export const check = async () => {
   localStorage.setItem("token", data.token);
   return jwt_decode(data.token);
 };
+
+export const deleteUsers = async (ids) => {
+  try {
+    const response = await $authHost.post("api/users/delete", { ids });
+
+    return response;
+  } catch (err) {
+    const { response } = err;
+
+    return response;
+  }
+};
+
+export const changeStatus = async (ids, status) => {
+  try {
+    const response = await $authHost.patch("api/users/changeStatus", {
+      ids,
+      status,
+    });
+
+    return response;
+  } catch (err) {
+    const { response } = err;
+
+    return response;
+  }
+};

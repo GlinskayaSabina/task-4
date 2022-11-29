@@ -62,7 +62,7 @@ const Auth = observer(() => {
             type="password"
           />
 
-          <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
+          <Row className="d-flex justify-content-between mt-3 mb-3 pl-3 pr-3">
             {isLogin ? (
               <div>
                 No account? <NavLink to={REGISTRATION_ROUTE}>Register!</NavLink>
@@ -70,7 +70,7 @@ const Auth = observer(() => {
             ) : (
               <>
                 <Form.Control
-                  className="mt-3"
+                  className="mt-3 mb-3"
                   placeholder="Enter name..."
                   value={name}
                   onChange={(e) => setName(e.target.value)}

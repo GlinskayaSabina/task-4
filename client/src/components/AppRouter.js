@@ -1,16 +1,37 @@
-import React, { useContext } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { observer } from "mobx-react-lite";
+import React, { useContext, useEffect } from "react";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import { check } from "../http/userAPI";
 import { Context } from "../index";
 import { authRoutes } from "../routes";
 import { publicRoutes } from "../routes";
 import { LOGIN_ROUTE } from "../utils/consts";
 
-function AppRouter() {
+const AppRouter = observer(() => {
   const { user } = useContext(Context);
+  const history = useHistory();
+
+  const checkAuthorization = async () => {
+    try {
+      const data = await check();
+      if (data) {
+        user.setUser(data);
+        user.setIsAuth(true);
+        history.push("/home");
+      }
+    } catch (err) {
+      console.warn("Your token was expired");
+    }
+  };
+
+  useEffect(() => {
+    checkAuthorization();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Switch>
-      {user.isAuth === true &&
+      {user._IsAuth === true &&
         authRoutes.map(({ path, Component }) => (
           <Route key={path} path={path} component={Component} exact />
         ))}
@@ -20,6 +41,6 @@ function AppRouter() {
       <Redirect to={LOGIN_ROUTE} />
     </Switch>
   );
-}
+});
 
 export default AppRouter;
