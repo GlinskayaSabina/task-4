@@ -16,9 +16,11 @@ const Auth = observer(() => {
   const isLogin = location.pathname === LOGIN_ROUTE;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [name, setName] = useState("");
 
   const click = async (event) => {
+    setErrorMessage("");
     event.preventDefault();
     event.stopPropagation();
     try {
@@ -35,7 +37,7 @@ const Auth = observer(() => {
         history.push(HOME_ROUTE);
       }
     } catch (e) {
-      alert(e.response.data.message);
+      setErrorMessage(e.response.data.message);
     }
   };
 
@@ -84,6 +86,11 @@ const Auth = observer(() => {
               {isLogin ? "Login" : "Registration"}
             </Button>
           </Row>
+          {
+            <div class="invalid-feedback d-block" style={{ height: 20 }}>
+              {errorMessage}
+            </div>
+          }
         </Form>
       </Card>
     </Container>
